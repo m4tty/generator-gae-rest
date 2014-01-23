@@ -1,20 +1,30 @@
 'use strict';
 var util = require('util');
+var fs = require('fs');
 var yeoman = require('yeoman-generator');
+var _ = require('lodash');
+var _s = require('underscore.string'),
+    pluralize = require('pluralize');
 
 var EntityGenerator = module.exports = function EntityGenerator(args, options, config) {
   // By calling `NamedBase` here, we get the argument to the subgenerator call
   // as `this.name`.
   yeoman.generators.NamedBase.apply(this, arguments);
+  this.generatorConfig = {};
+  console.log('--You called the entity subgenerator with the argument ' + this.name + '.');
 
-  console.log('You called the entity subgenerator with the argument ' + this.name + '.');
-};
+    fs.readFile('generator.json', 'utf8', function (err, data) {
+    if (err) {
+      console.log('Error: ' + err);
+      return;
+    }
+
+    this.generatorConfig = JSON.parse(data);
+  }.bind(this));
+}
 
 util.inherits(EntityGenerator, yeoman.generators.NamedBase);
 
-EntityGenerator.prototype.files = function files() {
-  this.copy('somefile.js', 'somefile.js');
-};
 
 EntityGenerator.prototype.askFor = function askFor() {
   var cb = this.async();
@@ -155,7 +165,7 @@ EntityGenerator.prototype.askFor = function askFor() {
 
 EntityGenerator.prototype.files = function files() {
 
-  this.baseName = this.generatorConfig.baseName;
+  this.appName = this.generatorConfig.appName;
   this.packageName = this.generatorConfig.packageName;
   this.entities = this.generatorConfig.entities;
   this.entities = _.reject(this.entities, function (entity) { return entity.name === this.name; }.bind(this));
@@ -165,22 +175,11 @@ EntityGenerator.prototype.files = function files() {
   this.generatorConfigStr = JSON.stringify(this.generatorConfig, null, '\t');
 
   this.template('_generator.json', 'generator.json');
-  this.template('../../app/templates/_server.go', 'server.go');
-  this.template('../../app/templates/models/_gorp.go', 'models/gorp.go');
-  this.template('models/_entity.go', 'models/' + this.name + '.go');
-  this.template('routes/_entities.go', 'routes/' + pluralize(this.name) + '.go');
+  this.template('../../app/templates/_app.go', 'app.go');
+  //this.template('../../app/templates/models/_gorp.go', 'models/gorp.go');
+  this.template('data/_DataModel.go', 'data/' + this.name + '/' + this.name + 'DataModel.go');
+  this.template('data/_DataManager.go', 'data/' + this.name + '/' + this.name + 'DataManager.go');
+  this.template('data/_DataManagerFactory.go', 'data/' + this.name + '/' + this.name + 'DataManagerFactory.go');
+  this.template('web/_Resource.go', 'web/' + this.name + '/' + this.name + 'Resource.go');
 
-  var publicDir = 'public/';
-  var publicCssDir = publicDir + 'css/';
-  var publicJsDir = publicDir + 'js/';
-  var publicViewDir = publicDir + 'views/';
-  var publicEntityJsDir = publicJsDir + this.name + '/';
-  var publicEntityViewDir = publicViewDir + this.name + '/';
-  this.mkdir(publicEntityJsDir);
-  this.mkdir(publicEntityViewDir);
-  this.template('../../app/templates/public/_index.html', publicDir + 'index.html');
-  this.template('public/js/entity/_entity-controller.js', publicEntityJsDir + this.name + '-controller.js');
-  this.template('public/js/entity/_entity-router.js', publicEntityJsDir + this.name + '-router.js');
-  this.template('public/js/entity/_entity-service.js', publicEntityJsDir + this.name + '-service.js');
-  this.template('public/views/entity/_entities.html', publicEntityViewDir + pluralize(this.name) + '.html');
 };

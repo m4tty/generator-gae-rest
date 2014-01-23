@@ -2,7 +2,8 @@
 var util = require('util');
 var path = require('path');
 var yeoman = require('yeoman-generator');
-
+var _s = require('underscore.string'),
+    pluralize = require('pluralize');
 
 var GaeRestGenerator = module.exports = function GaeRestGenerator(args, options, config) {
   yeoman.generators.Base.apply(this, arguments);
@@ -35,6 +36,18 @@ GaeRestGenerator.prototype.askFor = function askFor() {
 };
 
 GaeRestGenerator.prototype.app = function app() {
+  //this.copy('gitignore', '.gitignore');
+  this.entities = [];
+  this.resources = [];
+  this.generatorConfig = {
+    "appName": this.appName,
+    "entities": this.entities,
+    "resources": this.resources
+  };
+  this.generatorConfigStr = JSON.stringify(this.generatorConfig, null, '\t');
+
+  this.template('_generator.json', 'generator.json');
+
   this.mkdir('data');
   this.mkdir('domain');
 
@@ -43,7 +56,7 @@ GaeRestGenerator.prototype.app = function app() {
   this.mkdir('web/resources');
   this.mkdir('web/static');
 
-  
+
   this.copy('_package.json', 'package.json');
   this.copy('_bower.json', 'bower.json');
 };
