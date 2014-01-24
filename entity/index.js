@@ -180,6 +180,7 @@ EntityGenerator.prototype.files = function files() {
   this.template('data/_DataModel.go', 'data/' + this.name + '/' + this.name + 'DataModel.go');
   this.template('data/_DataManager.go', 'data/' + this.name + '/' + this.name + 'DataManager.go');
   this.template('data/_DataManagerFactory.go', 'data/' + this.name + '/' + this.name + 'DataManagerFactory.go');
+  this.template('domain/_DomainMgr.go', 'domain/' + this.name + '/' + this.name + 'DomainMgr.go');
   this.template('web/_Resource.go', 'web/' + this.name + '/' + this.name + 'Resource.go');
-
+  this.template('web/_Handler.go', 'web/' + this.name + '/' + this.name + 'Handler.go');
 };
