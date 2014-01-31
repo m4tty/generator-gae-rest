@@ -8,9 +8,9 @@ import "fmt"
 
 import "github.com/gorilla/mux"
 
-import "./web/resources"
-import "./web/domain/<%= pluralize(entity.name) %>"
-import "./data/<%= pluralize(entity.name) %>"
+import "<%= projectPath %>/web/resources"
+import "<%= projectPath %>/web/domain/<%= pluralize(entity.name) %>"
+import "<%= projectPath %>/data/<%= pluralize(entity.name) %>"
 import "appengine"
 import "appengine/user"
 import "appengine/datastore"
@@ -19,7 +19,7 @@ const <%= _.capitalize(entity.name) %>TimeFormat = "Mon, 02 Jan 2006 15:04:05 GM
 
 
 
-func Get<%= _.capitalize(pluralize(entity.name)) %>Handler(c appengine.Context, w http.ResponseWriter, r *http.Request) {
+func GetAll<%= _.capitalize(pluralize(entity.name)) %>Handler(c appengine.Context, w http.ResponseWriter, r *http.Request) {
 	u := user.Current(c)
 
 	if u == nil {

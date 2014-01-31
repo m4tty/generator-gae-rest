@@ -26,11 +26,14 @@ GaeRestGenerator.prototype.askFor = function askFor() {
   var prompts = [{
     name: 'appName',
     message: 'What would you like to name your rest application?',
+  },{
+    name: 'projectPath',
+    message: 'What is the project path for your application (e.g. github.com/user/project) ?',
   }];
 
   this.prompt(prompts, function (props) {
     this.appName = props.appName;
-
+    this.projectPath = props.projectPath;
     cb();
   }.bind(this));
 };
@@ -41,6 +44,7 @@ GaeRestGenerator.prototype.app = function app() {
   this.resources = [];
   this.generatorConfig = {
     "appName": this.appName,
+    "projectPath": this.projectPath,
     "entities": this.entities,
     "resources": this.resources
   };

@@ -166,6 +166,7 @@ EntityGenerator.prototype.askFor = function askFor() {
 EntityGenerator.prototype.files = function files() {
 
   this.appName = this.generatorConfig.appName;
+  this.projectPath = this.generatorConfig.projectPath;
   this.packageName = this.generatorConfig.packageName;
   this.entities = this.generatorConfig.entities;
   this.entities = _.reject(this.entities, function (entity) { return entity.name === this.name; }.bind(this));
@@ -180,6 +181,9 @@ EntityGenerator.prototype.files = function files() {
   this.template('data/_DataModel.go', 'data/' + this.name + '/' + this.name + 'DataModel.go');
   this.template('data/_DataManager.go', 'data/' + this.name + '/' + this.name + 'DataManager.go');
   this.template('data/_DataManagerFactory.go', 'data/' + this.name + '/' + this.name + 'DataManagerFactory.go');
+
+  this.template('data/_AppEngineDataManager.go', 'data/' + this.name + '/AppEngine' + this.name + 'DataManager.go');
+  
   this.template('domain/_DomainMgr.go', 'domain/' + this.name + '/' + this.name + 'DomainMgr.go');
   this.template('web/_Resource.go', 'web/' + this.name + '/' + this.name + 'Resource.go');
   this.template('web/_Handler.go', 'web/' + this.name + '/' + this.name + 'Handler.go');

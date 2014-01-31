@@ -1,3 +1,5 @@
+<% _.each(entities, function (entity) { %>
+
 package <%= entity.name %>DataMgr
 
 import (
@@ -27,7 +29,8 @@ func (dm appEngine<%= _.capitalize(entity.name) %>DataManager) Get<%= _.capitali
 	return
 }
 
-func (dm appEngine<%= _.capitalize(entity.name) %>DataManager) Get<%= _.capitalize(pluralize(entity.name) %>() (results []*<%= _.capitalize(entity.name) %>, err error) {
+
+func (dm appEngine<%= _.capitalize(entity.name) %>DataManager) Get<%= _.capitalize(pluralize(entity.name)) %>() (results []*<%= _.capitalize(entity.name) %>, err error) {
 	var ctx = *dm.currentContext
 	var <%= pluralize(entity.name) %> []*<%= _.capitalize(entity.name) %>
 
@@ -58,3 +61,4 @@ func (dm appEngine<%= _.capitalize(entity.name) %>DataManager) Delete<%= _.capit
 	err = g.Delete(g.Key(<%= entity.name %>))
 	return
 }
+<% }); %>

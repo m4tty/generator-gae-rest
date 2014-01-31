@@ -3,7 +3,7 @@ package main
 import (
     "appengine"
     "github.com/gorilla/mux"
-    "./web/handlers"
+    "<%= projectPath %>/web/handlers"
     "github.com/mjibson/appstats"
     "net/http"
 )
