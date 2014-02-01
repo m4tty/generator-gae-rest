@@ -9,7 +9,7 @@ import "fmt"
 import "github.com/gorilla/mux"
 
 import "<%= projectPath %>/web/resources"
-import "<%= projectPath %>/web/domain/<%= pluralize(entity.name) %>"
+import "<%= projectPath %>/domain/<%= pluralize(entity.name) %>"
 import "<%= projectPath %>/data/<%= pluralize(entity.name) %>"
 import "appengine"
 import "appengine/user"
@@ -112,12 +112,7 @@ func Add<%= _.capitalize(entity.name) %>Handler(c appengine.Context, w http.Resp
 	}
 }
 
-func CreateUser<%= _.capitalize(entity.name) %>Handler(c appengine.Context, w http.ResponseWriter, r *http.Request) {
-	//c := appengine.NewContext(r)
-	vars := mux.Vars(r)
-	<%= entity.name %>Id := vars["<%= entity.name %>Id"]
-	userId := vars["userId"]
-	fmt.Fprint(w, "single <%= entity.name %>"+<%= entity.name %>Id)
+func Update<%= _.capitalize(entity.name) %>Handler(c appengine.Context, w http.ResponseWriter, r *http.Request) {
 
 	decoder := json.NewDecoder(r.Body)
 	var <%= entity.name %> resources.<%= _.capitalize(entity.name) %>Resource
@@ -125,14 +120,15 @@ func CreateUser<%= _.capitalize(entity.name) %>Handler(c appengine.Context, w ht
 	if err != nil {
 		serveError(c, w, err)
 	}
-	<%= entity.name %>.OwnerId = userId
 
 	dataManager := <%= entity.name %>DataMgr.GetDataManager(&c)
 	dataMgr := <%= pluralize(entity.name) %>Domain.New<%= _.capitalize(pluralize(entity.name)) %>Mgr(dataManager)
 	_, saveErr := dataMgr.Save<%= _.capitalize(entity.name) %>(&<%= entity.name %>)
-
+	//TODO: return location header w/ the id that was created during save
 	if saveErr != nil {
 		serveError(c, w, saveErr)
 	}
 }
+
+
 <% }); %>

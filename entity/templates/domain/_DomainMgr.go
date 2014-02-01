@@ -80,7 +80,7 @@ func (dm <%= _.capitalize(pluralize(entity.name)) %>Mgr) Delete<%= _.capitalize(
 func mapResourceToData(<%= entity.name %>Resource *resources.<%= _.capitalize(entity.name) %>Resource, <%= entity.name %>Data *<%= entity.name %>DataMgr.<%= _.capitalize(entity.name) %>) {
 	<%= entity.name %>Data.Id = <%= entity.name %>Resource.Id
 	<% _.each(attrs, function (attr) { %>
-	<%= entity.name %>Data.<%= attr.attrName %> = <%= entity.name %>Resource.<%= attr.attrName %>
+	<%= entity.name %>Data.<%= _.capitalize(attr.attrName) %> = <%= entity.name %>Resource.<%= _.capitalize(attr.attrName) %>
 	<% }); %>
 }
 
