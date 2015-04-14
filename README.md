@@ -18,7 +18,7 @@ git clone this repo
 To install generator-gae-rest and then run:
 
 ```
-$ npm install -g
+$ npm install
 ```
 
 Finally, initiate the generator:
